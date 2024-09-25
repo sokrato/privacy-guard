@@ -1,0 +1,72 @@
+[build-system]
+#requires = ["setuptools>=61.0.0"]
+#build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hide"
+dynamic = ["version"]
+requires-python = ">= 3.7"
+dependencies = [
+    "cryptography"
+]
+authors = [
+  {name = "Xu Xiang", email = "sokrato@qq.com"},
+]
+description = "A Privacy Enhancing Toolkit."
+readme = "README.md"
+keywords = ["cryptography", "privacy", "toolkit"]
+license = {text = "MIT License"}
+classifiers = [
+    # 2 - Pre-Alpha, 3 - Alpha, 4 - Beta, 5 - Production/Stable
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+# https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
+[project.optional-dependencies]
+gui = ["PySide6"]
+cli = ["click", "rich"]
+
+[project.scripts]
+hide = "hide.cli:main"
+[project.gui-scripts]
+hide-gui = "hide.gui:main"
+
+[project.urls]
+Homepage = "https://github.com/sokrato"
+Documentation = "https://docs.djangoproject.com/"
+"Release notes" = "https://docs.djangoproject.com/en/stable/releases/"
+Funding = "https://www.djangoproject.com/fundraising/"
+Source = "https://github.com/django/django"
+Tracker = "https://code.djangoproject.com/"
+
+[tool.black]
+target-version = ["py310"]
+
+[tool.setuptools.dynamic]
+version = {attr = "hide.__version__"}
+
+[tool.setuptools.packages.find]
+# https://setuptools.pypa.io/en/latest/userguide/package_discovery.html
+include = ["hide"]
+
+# https://hatch.pypa.io/latest/build/
+[tool.hatch.build.targets.sdist]
+include = ["hide"]
+exclude = [".gitignore"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["hide"]
+
+[tool.hatch.version]
+path = "hide/__init__.py"

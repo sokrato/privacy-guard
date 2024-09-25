@@ -1,0 +1,10 @@
+# dev
+black
+pytest
+pytest-cov
+hatch
+# runtime
+numpy
+cryptography
+click
+pyside6
