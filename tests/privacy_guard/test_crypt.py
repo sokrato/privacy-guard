@@ -2,7 +2,7 @@ import io
 import secrets
 from pathlib import Path
 import pytest
-from hide.crypt import (
+from privacy_guard.files import (
     iter_bytes,
     ChaChaCipher,
     AESCipher,

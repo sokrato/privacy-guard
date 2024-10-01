@@ -4,6 +4,7 @@ pytest
 pytest-cov
 hatch
 # runtime
+python-dotenv
 numpy
 cryptography
 click

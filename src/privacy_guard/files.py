@@ -188,7 +188,7 @@ class KeyMan:
             os.fchmod(f.fileno(), 0o600)
 
     def reset_passwd(self, passwd: bytes) -> bytes:
-        key = hashlib.pbkdf2_hmac("sha1", passwd, b"hid3", 10240, 32)
+        key = hashlib.pbkdf2_hmac("sha1", passwd, b"hid3", 480000, 32)
         self._ensure_file()
         with open(self.file, "wb") as f:
             f.write(key)

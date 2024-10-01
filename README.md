@@ -5,3 +5,4 @@ TODO:
 
 - Text encryption / decryption.
 - Password generation, like https://oneshallpass.com/
+- password manager
