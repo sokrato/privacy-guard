@@ -5,7 +5,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "privacy-guard"
+name = "privacy_toolkit"
 dynamic = ["version"]
 requires-python = ">= 3.7"
 dependencies = [
@@ -38,9 +38,9 @@ gui = ["PySide6"]
 cli = ["click", "rich"]
 
 [project.scripts]
-pg = "privacy_guard.cli:main"
+ptk = "ptk.cli:main"
 [project.gui-scripts]
-pg-gui = "privacy_guard.gui:main"
+ptk-gui = "ptk.gui:main"
 
 [project.urls]
 Homepage = "https://github.com/sokrato/privacy-guard"
@@ -54,20 +54,20 @@ Source = "https://github.com/sokrato/privacy-guard"
 target-version = ["py310"]
 
 [tool.setuptools.dynamic]
-version = {attr = "privacy_guard.__version__"}
+version = {attr = "ptk.__version__"}
 
 [tool.setuptools.packages.find]
 # https://setuptools.pypa.io/en/latest/userguide/package_discovery.html
 where = ["src"]
-include = ["privacy_guard"]
+include = ["ptk"]
 
 # https://hatch.pypa.io/latest/build/
 [tool.hatch.build.targets.sdist]
-include = ["src/privacy_guard"]
+include = ["src/ptk"]
 exclude = [".gitignore"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/privacy_guard"]
+packages = ["src/ptk"]
 
 [tool.hatch.version]
-path = "src/privacy_guard/__init__.py"
+path = "src/ptk/__init__.py"

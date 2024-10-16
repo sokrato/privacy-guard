@@ -2,7 +2,7 @@ import os
 import tempfile
 from pathlib import Path
 import click
-from .crypt import FileCryptor, FileFlipper, KeyMan, ChaChaCipher, AESCipher
+from .files import FileCryptor, FileFlipper, KeyMan, ChaChaCipher, AESCipher
 
 kReplace = "REPLACE"
 kFC = "fc"

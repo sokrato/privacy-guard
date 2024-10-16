@@ -1,13 +1,13 @@
-.PHONY: test install uninstall clean fmt publish
+.PHONY: test install uninstall clean fmt publish build
 
 test:
-	python -m pytest --cov-report html:htmlcov --cov=privacy_guard tests/
+	python -m pytest --cov-report html:htmlcov --cov=ptk tests/
 
 install:
 	pip install -e .
 
 uninstall:
-	pip uninstall privacy_guide
+	pip uninstall privacy_toolkit
 
 clean:
 	rm -rf htmlcov *.egg-info .coverage dist/
@@ -15,7 +15,9 @@ clean:
 fmt:
 	black src/ tests/
 
-publish:
-	rm -rf dist/
+build:
+	mkdir -p dist
 	hatch build
+
+publish: clean build
 	hatch publish

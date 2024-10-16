@@ -2,7 +2,7 @@ import io
 import secrets
 from pathlib import Path
 import pytest
-from privacy_guard.files import (
+from ptk.files import (
     iter_bytes,
     ChaChaCipher,
     AESCipher,
