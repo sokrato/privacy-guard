@@ -1,6 +1,7 @@
 import os
 import tempfile
 from pathlib import Path
+from typing import Literal
 import click
 from .core.files import FileCryptor, FileFlipper, KeyMan, ChaChaCipher, AESCipher
 
@@ -9,7 +10,7 @@ kFC = "fc"
 DEFAULT_ALGO = "chacha"
 
 
-def get_file_cryptor(algo: str = DEFAULT_ALGO):
+def get_file_cryptor(algo: Literal["aes", "chacha"] = DEFAULT_ALGO):
     km = KeyMan()
     key = km.load()
     if not key:
@@ -45,25 +46,26 @@ def cli(ctx):
     ctx.ensure_object(dict)
 
 
-def crypt(fn, algo, files):
+def crypt(action, algo, files):
     fc = get_file_cryptor(algo)
-    fn = getattr(fc, fn)
-    with click.progressbar(files) as bar:
-        for filename in bar:
-            file_in = Path(filename)
-            if not file_in.is_file():
-                click.secho("not a file: %s" % filename, fg="yellow")
-                continue
+    fn = getattr(fc, action)
+    # with click.progressbar(files) as bar:
+    for filename in files:
+        file_in = Path(filename)
+        if not file_in.is_file():
+            click.secho("not a file: %s" % filename, fg="yellow")
+            continue
 
-            file_out = Path(filename + ".dec")
-            if file_out.is_file():
-                tmp = tempfile.NamedTemporaryFile(
-                    prefix=file_in.stem, dir=file_in.parent
-                )
-                file_out = tmp.name
+        file_out = Path(filename + ".dec")
+        if file_out.is_file():
+            tmp = tempfile.NamedTemporaryFile(
+                prefix=file_in.stem, dir=file_in.parent
+            )
+            file_out = tmp.name
 
-            fn(file_in, file_out)
-            os.rename(file_out, file_in)
+        fn(file_in, file_out)
+        os.rename(file_out, file_in)
+        click.echo(f"{action}ed in place: {file_in}")
 
 
 @cli.command()
