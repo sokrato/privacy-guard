@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+import hashlib
 import os
 import secrets
-import hashlib
+import struct
 import time
 import typing
-import struct
 from pathlib import Path
+
 import numpy as np
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
@@ -26,10 +27,10 @@ class AbstractCipher:
         pass
 
     def encrypt(self, fin: typing.BinaryIO, fout: typing.BinaryIO):
-        raise NotImplemented
+        raise NotImplementedError
 
     def decrypt(self, fin: typing.BinaryIO, fout: typing.BinaryIO):
-        raise NotImplemented
+        raise NotImplementedError
 
 
 class ChaChaCipher(AbstractCipher):
@@ -110,7 +111,7 @@ class AESCipher(AbstractCipher):
 
 
 class FileCryptor:
-    cipher_classes = {cls.ID: cls for cls in (ChaChaCipher, AESCipher)}
+    cipher_classes: typing.ClassVar = {cls.ID: cls for cls in (ChaChaCipher, AESCipher)}
 
     def __init__(self, pwd: bytes, default_cipher_cls: type[AbstractCipher]):
         self.pwd = pwd
@@ -136,7 +137,7 @@ class FileCryptor:
         self,
         filein: Path | str,
         out: Path | str | typing.BinaryIO,
-        cipher_cls: type[AbstractCipher] = None,
+        cipher_cls: type[AbstractCipher] | None = None,
     ):
         with open(filein, "rb") as fin:
             if isinstance(out, (Path, str)):
@@ -149,8 +150,8 @@ class FileCryptor:
         (ver,) = struct.unpack("B", fin.read(1))
         try:
             cipher_cls = self.cipher_classes[ver]
-        except KeyError:
-            raise ValueError("Unsupported cipher version: %s" % ver)
+        except KeyError as exc:
+            raise ValueError(f"Unsupported cipher version: {ver}") from exc
 
         cipher = cipher_cls(self.pwd)
         cipher.decrypt(fin, fout)
@@ -177,9 +178,7 @@ class KeyMan:
     def _ensure_file(self):
         if self.file.exists():
             if not self.file.is_file():
-                raise RuntimeError(
-                    "path %s already exists but is not a file", self.file
-                )
+                raise RuntimeError("path %s already exists but is not a file", self.file)
             return
 
         self.file.parent.mkdir(parents=True, exist_ok=True)
@@ -199,7 +198,7 @@ class FileFlipper:
     def __init__(self, size: int = 256):
         self.size = size
 
-    def flip(self, filename: Path | str, size: int = None):
+    def flip(self, filename: Path | str, size: int | None = None):
         if size is None:
             size = self.size
 

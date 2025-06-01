@@ -1,4 +1,4 @@
-from PySide6 import QtWidgets, QtUiTools
+from PySide6 import QtUiTools, QtWidgets
 
 
 def main():

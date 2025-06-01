@@ -1,11 +1,13 @@
 import os
-from dotenv import load_dotenv
-import requests
+
 import pytest
 
 
 @pytest.mark.skip
 def test_api():
+    import requests
+    from dotenv import load_dotenv
+
     load_dotenv()  # take environment variables from .env.
     # https://pastebin.com/doc_api
     url = "https://pastebin.com/api/api_post.php"

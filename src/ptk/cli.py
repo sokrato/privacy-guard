@@ -2,11 +2,11 @@ import os
 import tempfile
 from pathlib import Path
 from typing import Literal
-import click
-from .core.files import FileCryptor, FileFlipper, KeyMan, ChaChaCipher, AESCipher
 
-kReplace = "REPLACE"
-kFC = "fc"
+import click
+
+from .core.files import AESCipher, ChaChaCipher, FileCryptor, FileFlipper, KeyMan
+
 DEFAULT_ALGO = "chacha"
 
 
@@ -23,9 +23,7 @@ def get_file_cryptor(algo: Literal["aes", "chacha"] = DEFAULT_ALGO):
 
 def crypt_opts(fn):
     wfn = (
-        click.option(
-            "--replace/--no-replace", default=False, help="replace existing files"
-        ),
+        click.option("--replace/--no-replace", default=False, help="replace existing files"),
         click.option(
             "-a",
             "--algorithm",
@@ -46,21 +44,19 @@ def cli(ctx):
     ctx.ensure_object(dict)
 
 
-def crypt(action, algo, files):
+def crypt(action: Literal["encrypt", "decrypt"], algo, files):
     fc = get_file_cryptor(algo)
     fn = getattr(fc, action)
     # with click.progressbar(files) as bar:
     for filename in files:
         file_in = Path(filename)
         if not file_in.is_file():
-            click.secho("not a file: %s" % filename, fg="yellow")
+            click.secho(f"not a file: {filename}", fg="yellow")
             continue
 
         file_out = Path(filename + ".dec")
         if file_out.is_file():
-            tmp = tempfile.NamedTemporaryFile(
-                prefix=file_in.stem, dir=file_in.parent
-            )
+            tmp = tempfile.NamedTemporaryFile(prefix=file_in.stem, dir=file_in.parent)
             file_out = tmp.name
 
         fn(file_in, file_out)
@@ -98,7 +94,7 @@ def flip(size: int, files):
     """
     ff = FileFlipper(size)
     for filename in files:
-        click.echo("flipping: %s" % filename)
+        click.echo(f"flipping: {filename}")
         ff.flip(filename)
 
 
