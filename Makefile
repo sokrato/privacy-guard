@@ -27,4 +27,4 @@ build:
 publish: clean build
 	# hatch publish
 	# uv pip install hatch first
-	uv run hatch build
+	uv publish

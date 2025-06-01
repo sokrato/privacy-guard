@@ -6,3 +6,10 @@ TODO:
 - Text encryption / decryption.
 - Password generation, like https://oneshallpass.com/
 - password manager
+
+
+## Install
+`pip install privacy_toolkit`
+
+## Use
+`ptk -h`

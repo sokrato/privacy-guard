@@ -8,8 +8,21 @@ import time
 import typing
 from pathlib import Path
 
-import numpy as np
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+
+try:
+    import numpy as np
+
+    def invert_bits(buf: bytes) -> bytes:
+        arr = np.frombuffer(buf, dtype=np.uint8)
+        buf = np.bitwise_invert(arr).tobytes()
+        return buf
+
+except ImportError:
+
+    def invert_bits(buf: bytes) -> bytes:
+        buf = [(~i) & 0xFF for i in buf]
+        return bytes(buf)
 
 
 def iter_bytes(rd: typing.BinaryIO, buf_size=2048):
@@ -204,7 +217,6 @@ class FileFlipper:
 
         with open(filename, "r+b") as f:
             buf = f.read(size)
-            arr = np.frombuffer(buf, dtype=np.uint8)
-            buf = np.bitwise_invert(arr).tobytes()
+            buf = invert_bits(buf)
             f.seek(0, os.SEEK_SET)
             f.write(buf)

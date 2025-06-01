@@ -8,7 +8,7 @@ authors = [
 ]
 dependencies = [
     "cryptography",
-    "numpy",
+    "click"
 ]
 readme = "README.md"
 keywords = ["encryption", "cryptography", "privacy"]
@@ -32,9 +32,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 # https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
-[project.optional-dependencies]
+# [project.optional-dependencies]
 # gui = ["PySide6"]
-cli = ["click", "rich"]
+opt = ["numpy"] # to optimize bit flipping
 
 [project.scripts]
 ptk = "ptk.cli:main"
