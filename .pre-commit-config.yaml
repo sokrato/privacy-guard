@@ -13,3 +13,8 @@ repos:
       types_or: [python, pyi]
     - id: ruff-format
       types_or: [python, pyi]
+- repo: https://github.com/astral-sh/uv-pre-commit
+  # make sure uv.lock is up-to-date with pyproject.toml
+  rev: 0.7.9
+  hooks:
+    - id: uv-lock

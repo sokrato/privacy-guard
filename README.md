@@ -9,7 +9,15 @@ TODO:
 
 
 ## Install
-`pip install privacy_toolkit`
+- `uv tool install privacy_toolkit`
+- `pip install privacy_toolkit`
 
 ## Use
 `ptk -h`
+
+
+## dev
+`uv tool install` the following packages:
+- pre-commit
+- ruff
+- black
